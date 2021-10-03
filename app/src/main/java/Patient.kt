@@ -1,1 +1,0 @@
-class Patient (var dni: Int, var full_name: String, var direction: String)

@@ -1,6 +1,5 @@
 package com.lab03.lab03_idnp
 
-import Patient
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,7 +7,8 @@ import android.view.View
 
 class MainActivity : AppCompatActivity() {
 
-    val patient = Patient(73641789, "Diego Flores Camargo", "Calle Tarapacá 208 Miraflores")
+    val patientData = arrayOf("73641789", "Diego Flores Camargo", "Calle Tarapaca 208 Miraflores")
+    val patientVisit = arrayOf("70kg", "73C", "110mmHg", "95%")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
