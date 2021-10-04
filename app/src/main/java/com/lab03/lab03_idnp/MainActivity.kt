@@ -3,25 +3,25 @@ package com.lab03.lab03_idnp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import com.lab03.lab03_idnp.PatientActivity.Companion.ARRAY
 
 class MainActivity : AppCompatActivity() {
 
-    var patientData = arrayOf<String>("73641789", "Diego Flores Camargo", "Calle Tarapaca 208 Miraflores", "dflorescam@unsa.edu.pe")
+    var patientData = arrayOf<String>("", "", "", "")
     var patientVisit = arrayOf<String>("70kg", "73C", "110mmHg", "95%")
 
-    private val infoPatient = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ arrayPatientData ->
+    private val infoPatient = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ arrayPatientData: ActivityResult ->
         if (arrayPatientData.resultCode == RESULT_OK){
-            //patientData = arrayPatientData.data?.getStringArrayExtra(ARRAY).orEmpty() as Array<String>
+            patientData = arrayPatientData.data!!.extras!![ARRAY] as Array<String>
             Toast.makeText(this, "Se actualizó paciente", Toast.LENGTH_SHORT).show()
             Log.e("Array actualizado", patientData[0])
+            setData(patientData)
         }
         else{
             Toast.makeText(this, "Sin cambios", Toast.LENGTH_SHORT).show()
@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Log.e("Array Actual", patientData[0])
+
         val btnNewPatient = findViewById<Button>(R.id.btnNewPatient)
 
         btnNewPatient.setOnClickListener{
@@ -39,6 +41,11 @@ class MainActivity : AppCompatActivity() {
             infoPatient.launch(intent)
         }
 
+        setData(patientData)
+
+    }
+
+    fun setData(tempPatientData: Array<String>){
         var txtDNI = findViewById<TextView>(R.id.txtDNI).apply {
             text = patientData[0]
         }
@@ -70,8 +77,8 @@ class MainActivity : AppCompatActivity() {
         var txtSaturation = findViewById<TextView>(R.id.txtSaturation).apply {
             text = patientVisit[3]
         }
-
     }
+
 /*
     /** We call the activity for the btnNewPatient to the visit of the patient */
     fun visitPatientButton(view: View){
