@@ -7,13 +7,12 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnNewPatient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="20dp"
-        android:onClick="patientViewButton"
         android:text="Nuevo Paciente"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button2"
@@ -25,7 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="20dp"
-        android:onClick="visitPatientButton"
         android:text="Datos de Visita"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
