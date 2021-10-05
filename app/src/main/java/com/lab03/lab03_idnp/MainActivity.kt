@@ -1,12 +1,11 @@
 package com.lab03.lab03_idnp
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import com.lab03.lab03_idnp.PatientActivity.Companion.ARRAY
@@ -14,13 +13,12 @@ import com.lab03.lab03_idnp.PatientActivity.Companion.ARRAY
 class MainActivity : AppCompatActivity() {
 
     var patientData = arrayOf<String>("", "", "", "")
-    var patientVisit = arrayOf<String>("70kg", "73C", "110mmHg", "95%")
+    var patientVisit = arrayOf<String>("", "", "", "")
 
     private val infoPatient = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ arrayPatientData: ActivityResult ->
         if (arrayPatientData.resultCode == RESULT_OK){
             patientData = arrayPatientData.data!!.extras!![ARRAY] as Array<String>
             Toast.makeText(this, "Se actualizó paciente", Toast.LENGTH_SHORT).show()
-            Log.e("Array actualizado", patientData[0])
             setData(patientData)
         }
         else{
@@ -28,11 +26,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val dataVisit = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ arrayVisitData: ActivityResult ->
+        if (arrayVisitData.resultCode == RESULT_OK){
+            patientVisit = arrayVisitData.data!!.extras!![ARRAY] as Array<String>
+            Toast.makeText(this, "Se actualizó datos de paciente", Toast.LENGTH_SHORT).show()
+            setData(patientVisit)
+        }
+        else{
+            Toast.makeText(this, "Sin cambios", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        Log.e("Array Actual", patientData[0])
 
         val btnNewPatient = findViewById<Button>(R.id.btnNewPatient)
 
@@ -41,11 +49,33 @@ class MainActivity : AppCompatActivity() {
             infoPatient.launch(intent)
         }
 
+        val btnVisitData = findViewById<Button>(R.id.btnVisitData)
+
+        btnVisitData.setOnClickListener{
+            val intent = Intent(this, VisitActivity::class.java).apply {
+                putExtra(EXTRA_MESSAGE, patientData[0])
+            }
+            dataVisit.launch(intent)
+        }
+
+        val btnSendMessage = findViewById<ImageButton>(R.id.btnSendMessage)
+
+        btnSendMessage.setOnClickListener{
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(patientData[3]))
+                putExtra(Intent.EXTRA_SUBJECT, "Programar Visita Médica")
+                putExtra(Intent.EXTRA_TEXT, "Necesitamos programar una cita médica...")
+            }
+
+            startActivity(intent)
+        }
+
         setData(patientData)
 
     }
 
-    fun setData(tempPatientData: Array<String>){
+    private fun setData(tempPatientData: Array<String>){
         var txtDNI = findViewById<TextView>(R.id.txtDNI).apply {
             text = patientData[0]
         }
@@ -79,14 +109,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-/*
-    /** We call the activity for the btnNewPatient to the visit of the patient */
-    fun visitPatientButton(view: View){
-        val dni = patientData.get(0)
-        val intent = Intent(this, VisitActivity::class.java).apply {
-            putExtra(EXTRA_MESSAGE, dni)
-        }
-        startActivity(intent)
-    }
-*/
 }

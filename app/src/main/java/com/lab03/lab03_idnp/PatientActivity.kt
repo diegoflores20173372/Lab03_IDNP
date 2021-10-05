@@ -21,8 +21,6 @@ class PatientActivity : AppCompatActivity() {
         var direction = findViewById<EditText>(R.id.edtDirection)
         var email = findViewById<EditText>(R.id.edtEmail)
 
-        //val patientData = arrayOf(dni.text.toString(), fullName.text.toString(), direction.text.toString(), email.text.toString())
-
         val btnSave = findViewById<Button>(R.id.btnSave)
         val btnCancel = findViewById<Button>(R.id.btnCancel)
 

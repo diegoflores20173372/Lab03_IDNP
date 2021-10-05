@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Lab03 - IDNP</string>
+    <string name="register_patient">Registrar Paciente</string>
+    <string name="patient_visit">Visita Médica</string>
 </resources>
